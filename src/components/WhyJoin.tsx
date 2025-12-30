@@ -35,16 +35,25 @@ const benefits = [
   }
 ];
 
+// Inline style for subtle glass effect on benefit cards
+const cardGlassStyle: React.CSSProperties = {
+  backdropFilter: 'blur(4px)',
+  WebkitBackdropFilter: 'blur(4px)',
+  backgroundColor: 'rgba(23, 23, 23, 0.5)',
+  borderColor: 'rgba(64, 64, 64, 0.3)',
+  transition: 'all 0.3s ease',
+};
+
 export function WhyJoin() {
   return (
-    <section className="py-16 md:py-24 border-t border-neutral-900">
+    <section className="py-16 md:py-24 border-t border-neutral-800">
       <h2 className="text-3xl md:text-4xl font-serif italic mb-12 text-white">Why join</h2>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
         {benefits.map((benefit, index) => (
           <div key={index} className="flex flex-col gap-2">
             <h3 className="text-white font-bold text-base">{benefit.title}</h3>
-            <p className="text-neutral-500 text-sm leading-relaxed">
+            <p className="text-neutral-400 text-sm leading-relaxed">
               {benefit.description}
             </p>
           </div>
