@@ -13,10 +13,12 @@ import { FeatureAccordion } from './components/resume/FeatureAccordion';
 import { Contact } from './components/resume/Contact';
 import { FloatingChat } from './components/FloatingChat';
 import { Footer } from './components/Footer';
+import { CustomCursor } from './components/ui/CustomCursor';
 
 export default function App() {
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-500/30">
+      <CustomCursor />
       <TopBar />
       <div className="max-w-4xl mx-auto px-6">
         
