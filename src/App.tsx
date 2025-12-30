@@ -14,43 +14,47 @@ import { Contact } from './components/resume/Contact';
 import { FloatingChat } from './components/FloatingChat';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/ui/CustomCursor';
+import { ShaderBackground } from './components/ui/ShaderBackground';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-500/30">
-      <CustomCursor />
-      <TopBar />
-      <div className="max-w-4xl mx-auto px-6">
-        
-        <ResumeHeader />
-        
-        <Stats />
-        
-        <TechStack />
-        
-        <Experience />
+    <div className="min-h-screen bg-transparent text-white font-sans selection:bg-red-500/30">
+      <ShaderBackground />
+      <div className="relative z-10">
+        <CustomCursor />
+        <TopBar />
+        <div className="max-w-4xl mx-auto px-6">
 
-        <FeatureAccordion />
+          <ResumeHeader />
 
-        <Services />
-        
-        <BentoGrid />
+          <Stats />
 
-        <ProjectGallery />
+          <TechStack />
 
-        <Writing />
+          <Experience />
 
-        <Certificates />
+          <FeatureAccordion />
 
-        <Contact />
+          <Services />
 
-        <div className="py-12">
+          <BentoGrid />
+
+          <ProjectGallery />
+
+          <Writing />
+
+          <Certificates />
+
+          <Contact />
+
+          <div className="py-12">
             <Footer />
+          </div>
+
         </div>
 
+        <FloatingChat />
       </div>
-      
-      <FloatingChat />
     </div>
   )
 }

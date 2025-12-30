@@ -66,16 +66,29 @@ export function BentoGrid() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[280px]">
         {projects.map((project, i) => (
-          <div 
-            key={i} 
+          <div
+            key={i}
             className={`
-              group relative p-8 rounded-xl border border-neutral-900 bg-[#0A0A0A] hover:bg-[#111] transition-all duration-300 flex flex-col justify-between
+              group relative p-8 rounded-xl border backdrop-blur-sm transition-all duration-300 flex flex-col justify-between
               ${project.size === 'large' ? 'md:col-span-2' : ''}
               ${project.size === 'tall' ? 'md:row-span-2' : ''}
             `}
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'rgba(255, 255, 255, 0.2)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            }}
           >
+            {/* TOP: Year, Category, Arrow */}
             <div className="flex justify-between items-start">
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
                 <span className="text-xs font-mono text-neutral-500">{project.year}</span>
                 <Badge variant="outline" className="w-fit border-neutral-800 text-neutral-400 font-normal text-[10px] tracking-wider uppercase bg-transparent pointer-events-none">
                   {project.category}
@@ -84,16 +97,17 @@ export function BentoGrid() {
               <ArrowUpRight className="w-5 h-5 text-neutral-600 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
             </div>
 
-            <div className="mt-8 flex flex-col gap-6">
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold text-white group-hover:text-red-500 transition-colors">{project.title}</h3>
-                <p className="text-neutral-500 text-sm leading-relaxed max-w-[90%]">
-                  {project.description}
-                </p>
-              </div>
-              <div className="pt-5 border-t border-neutral-900/50">
-                <span className="text-xs font-mono text-neutral-400">{project.stats}</span>
-              </div>
+            {/* MIDDLE: Title, Description */}
+            <div className="flex-1 flex flex-col justify-center">
+              <h3 className="text-xl font-bold text-white group-hover:text-red-500 transition-colors">{project.title}</h3>
+              <p className="text-neutral-500 text-sm leading-relaxed mt-2">
+                {project.description}
+              </p>
+            </div>
+
+            {/* BOTTOM: Stats */}
+            <div>
+              <span className="text-xs font-mono text-neutral-400">{project.stats}</span>
             </div>
           </div>
         ))}

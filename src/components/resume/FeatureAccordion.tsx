@@ -28,9 +28,9 @@ export function FeatureAccordion() {
   const [activeFeature, setActiveFeature] = useState(0);
 
   return (
-    <section className="py-24 border-t border-neutral-900 bg-[#050505] relative overflow-hidden">
+    <section className="py-24 border-t border-neutral-900 bg-transparent relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 w-full">
-        
+
         <div className="mb-16">
           <h2 className="text-4xl md:text-5xl font-serif italic text-white mb-6">
             Methodology
@@ -41,11 +41,11 @@ export function FeatureAccordion() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
-          
+
           {/* Left Side: Accordion */}
           <div className="space-y-6">
             {features.map((feature, index) => (
-              <div 
+              <div
                 key={feature.id}
                 onClick={() => setActiveFeature(index)}
                 className={cn(
@@ -57,14 +57,14 @@ export function FeatureAccordion() {
                   <h3 className="text-2xl md:text-3xl font-serif italic text-white group-hover:text-red-500 transition-colors duration-300">
                     {feature.title}
                   </h3>
-                  <ChevronDown 
+                  <ChevronDown
                     className={cn(
                       "w-5 h-5 text-neutral-500 transition-transform duration-500",
                       activeFeature === index ? "rotate-180 text-red-500" : "rotate-0"
-                    )} 
+                    )}
                   />
                 </div>
-                
+
                 <AnimatePresence initial={false}>
                   {activeFeature === index && (
                     <motion.div
@@ -90,40 +90,40 @@ export function FeatureAccordion() {
 
           {/* Right Side: Image/Preview */}
           <div className="relative h-[400px] md:h-[600px] w-full bg-[#0A0A0A] border border-neutral-800 p-2 md:p-4 rounded-sm">
-             <div className="relative w-full h-full overflow-hidden bg-black border border-neutral-900">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeFeature}
-                    initial={{ opacity: 0, scale: 1.05, y: 10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute inset-0"
-                  >
-                    <img 
-                      src={features[activeFeature].image} 
-                      alt={features[activeFeature].title}
-                      className="w-full h-full object-cover opacity-80"
-                    />
-                    {/* Overlay Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
-                    
-                    {/* Decorative Elements on top of image */}
-                    <div className="absolute bottom-6 left-6 right-6">
-                        <div className="inline-block px-3 py-1 border border-white/20 bg-black/50 backdrop-blur-md rounded-full mb-3">
-                            <span className="text-[10px] font-mono text-white/80 uppercase tracking-widest">{features[activeFeature].id} — FEATURE</span>
-                        </div>
-                        <h4 className="text-xl text-white font-medium">{features[activeFeature].title}</h4>
+            <div className="relative w-full h-full overflow-hidden bg-black border border-neutral-900">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeFeature}
+                  initial={{ opacity: 0, scale: 1.05, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute inset-0"
+                >
+                  <img
+                    src={features[activeFeature].image}
+                    alt={features[activeFeature].title}
+                    className="w-full h-full object-cover opacity-80"
+                  />
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
+
+                  {/* Decorative Elements on top of image */}
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <div className="inline-block px-3 py-1 border border-white/20 bg-black/50 backdrop-blur-md rounded-full mb-3">
+                      <span className="text-[10px] font-mono text-white/80 uppercase tracking-widest">{features[activeFeature].id} — FEATURE</span>
                     </div>
-                  </motion.div>
-                </AnimatePresence>
-             </div>
-             
-             {/* Corner Accents */}
-             <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neutral-700 -translate-x-[1px] -translate-y-[1px]"></div>
-             <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-neutral-700 translate-x-[1px] -translate-y-[1px]"></div>
-             <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-neutral-700 -translate-x-[1px] translate-y-[1px]"></div>
-             <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-neutral-700 translate-x-[1px] translate-y-[1px]"></div>
+                    <h4 className="text-xl text-white font-medium">{features[activeFeature].title}</h4>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Corner Accents */}
+            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neutral-700 -translate-x-[1px] -translate-y-[1px]"></div>
+            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-neutral-700 translate-x-[1px] -translate-y-[1px]"></div>
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-neutral-700 -translate-x-[1px] translate-y-[1px]"></div>
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-neutral-700 translate-x-[1px] translate-y-[1px]"></div>
           </div>
 
         </div>
