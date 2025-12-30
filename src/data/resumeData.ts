@@ -35,9 +35,9 @@ export const resumeData: ResumeData = {
                 { name: "Python", logo: "/logos/python.svg" },
                 { name: "TypeScript", logo: "/logos/typescript.svg" },
                 { name: "Java", logo: "/logos/java.svg" },
-                { name: "C++", logo: "/logos/cpp.svg" },
+                { name: "C++", logo: "/logos/cplusplus.svg" },
                 { name: "Dart", logo: "/logos/dart.svg" },
-                { name: "HTML", logo: "/logos/html.svg" }
+                { name: "HTML", logo: "/logos/html5.svg" }
             ]
         },
         {
@@ -66,7 +66,7 @@ export const resumeData: ResumeData = {
                 { name: "Vercel", logo: "/logos/vercel.svg" },
                 { name: "Figma", logo: "/logos/figma.svg" },
                 { name: "Datadog", logo: "/logos/datadog.svg" },
-                { name: "Google Colab", logo: "/logos/colab.svg" },
+                { name: "Google Colab", logo: "/logos/googlecolab.svg" },
                 { name: "Jupyter Notebook", logo: "/logos/jupyter.svg" }
             ]
         },
@@ -89,27 +89,27 @@ export const resumeData: ResumeData = {
         {
             name: "Machine Learning Specialization",
             provider: "DeepLearning.AI",
-            logo: "/logos/deeplearning-ai.svg"
+            logo: "/images/DeepLearning AI Logo.png"
         },
         {
             name: "Practical Deep Learning",
             provider: "fast.ai",
-            logo: "/logos/fastai.svg"
+            logo: "/images/Fast.ai Logo.png"
         },
         {
             name: "6.S191 Introduction to Deep Learning",
             provider: "MIT",
-            logo: "/logos/mit.svg"
+            logo: "/images/MIT Logo.svg.png"
         },
         {
             name: "CS230 Deep Learning",
             provider: "Stanford",
-            logo: "/logos/stanford.svg"
+            logo: "/images/Stanford Cardinal Logo.svg.png"
         },
         {
             name: "Writing in the Sciences",
             provider: "Stanford",
-            logo: "/logos/stanford.svg"
+            logo: "/images/Stanford Cardinal Logo.svg.png"
         }
     ],
     experience: [

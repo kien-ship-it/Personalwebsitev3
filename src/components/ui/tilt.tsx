@@ -4,14 +4,15 @@ import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 interface TiltProps {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   rotation?: number;
   scale?: number;
   perspective?: number;
 }
 
-export function Tilt({ children, className, rotation = 15, scale = 1.05, perspective = 1000 }: TiltProps) {
+export function Tilt({ children, className, style, rotation = 15, scale = 1.05, perspective = 1000 }: TiltProps) {
   const ref = useRef<HTMLDivElement>(null);
-  
+
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -21,7 +22,7 @@ export function Tilt({ children, className, rotation = 15, scale = 1.05, perspec
 
   const rotateX = useTransform(mouseY, [-0.5, 0.5], [rotation, -rotation]);
   const rotateY = useTransform(mouseX, [-0.5, 0.5], [-rotation, rotation]);
-  
+
   // Create a sheen effect based on mouse position
   const sheenOpacity = useTransform(mouseX, (value) => Math.abs(value) > 0.01 ? 1 : 0);
 
@@ -51,7 +52,7 @@ export function Tilt({ children, className, rotation = 15, scale = 1.05, perspec
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={`relative ${className}`}
-      style={{ perspective: `${perspective}px` }}
+      style={{ perspective: `${perspective}px`, ...style }}
     >
       <motion.div
         style={{
@@ -62,15 +63,15 @@ export function Tilt({ children, className, rotation = 15, scale = 1.05, perspec
         whileHover={{ scale }}
         className="w-full h-full"
       >
-        <div 
-          style={{ transform: "translateZ(20px)" }} 
+        <div
+          style={{ transform: "translateZ(20px)" }}
           className="w-full h-full shadow-2xl rounded-xl"
         >
           {children}
         </div>
-        
+
         {/* Shine effect */}
-        <motion.div 
+        <motion.div
           className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none z-50 rounded-xl mix-blend-overlay"
           style={{
             opacity: sheenOpacity,
