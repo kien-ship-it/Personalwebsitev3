@@ -1,58 +1,54 @@
 import React from 'react';
-import { Button } from './components/ui/button';
-import { ArrowRight, Zap } from 'lucide-react';
-import { WhyJoin } from './components/WhyJoin';
-import { HowItWorks } from './components/HowItWorks';
+import { ResumeHeader } from './components/resume/ResumeHeader';
+import { TopBar } from './components/resume/TopBar';
+import { Stats } from './components/resume/Stats';
+import { Experience } from './components/resume/Experience';
+import { BentoGrid } from './components/resume/BentoGrid';
+import { TechStack } from './components/resume/TechStack';
+import { ProjectGallery } from './components/resume/ProjectGallery';
+import { Writing } from './components/resume/Writing';
+import { Certificates } from './components/resume/Certificates';
+import { Services } from './components/resume/Services';
+import { FeatureAccordion } from './components/resume/FeatureAccordion';
+import { Contact } from './components/resume/Contact';
+import { FloatingChat } from './components/FloatingChat';
 import { Footer } from './components/Footer';
-import { InterstellarGradient } from './components/InterstellarGradient';
 
 export default function App() {
   return (
-    <div className="relative min-h-screen">
-      <InterstellarGradient />
-      <div className="relative z-10 min-h-screen bg-[#000000]/85 text-white font-sans selection:bg-red-500/30">
-        <div className="max-w-4xl mx-auto px-6 py-12 md:py-24">
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-500/30">
+      <TopBar />
+      <div className="max-w-4xl mx-auto px-6">
+        
+        <ResumeHeader />
+        
+        <Stats />
+        
+        <TechStack />
+        
+        <Experience />
 
-          {/* Header */}
-          <header className="mb-20 md:mb-32">
-            {/* Logo */}
-            <div className="flex items-center gap-2 text-red-500 font-bold mb-12">
-              <Zap className="w-5 h-5 fill-current" />
-              <span className="text-white tracking-tight">Amp</span>
-            </div>
+        <FeatureAccordion />
 
-            {/* Hero Content */}
-            <div className="max-w-2xl">
-              <h1 className="text-6xl md:text-[5rem] leading-[0.9] font-serif italic mb-8 tracking-tight">
-                Build <span className="not-italic font-normal">Crew</span>
-              </h1>
+        <Services />
+        
+        <BentoGrid />
 
-              <p className="text-lg md:text-xl text-neutral-300 mb-10 max-w-lg leading-relaxed font-light">
-                A community of devs shipping with agents.<br />
-                Get <span className="text-white font-medium">$100 in Amp credit</span>, join a Discord community, take on build challenges, earn XP, and unlock badges.
-              </p>
+        <ProjectGallery />
 
-              <div className="flex flex-col items-start gap-5">
-                <Button className="bg-white text-black hover:bg-neutral-200 hover:scale-[1.02] active:scale-[0.98] transition-all rounded px-6 h-12 text-base font-medium group">
-                  Join Build Crew <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <p className="text-xs md:text-sm text-neutral-400 italic font-serif">
-                  Build challenges, XP system, private community
-                </p>
-              </div>
-            </div>
-          </header>
+        <Writing />
 
-          {/* Why Join Section */}
-          <WhyJoin />
+        <Certificates />
 
-          {/* How It Works Section */}
-          <HowItWorks />
+        <Contact />
 
-          {/* Footer */}
-          <Footer />
+        <div className="py-12">
+            <Footer />
         </div>
+
       </div>
+      
+      <FloatingChat />
     </div>
   )
 }
