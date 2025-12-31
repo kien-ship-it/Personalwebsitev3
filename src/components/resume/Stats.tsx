@@ -3,7 +3,7 @@ import { Layers, Users, GitCommit, Coffee } from 'lucide-react';
 
 const stats = [
   { label: "Years Experience", value: "08", icon: Layers },
-  { label: "Projects Shipped", value: "42", icon: GitCommit },
+  { label: "Projects Shipped", value: "10+", icon: GitCommit },
   { label: "Happy Clients", value: "120+", icon: Users },
   { label: "Coffees Brewed", value: "3.5k", icon: Coffee },
 ];

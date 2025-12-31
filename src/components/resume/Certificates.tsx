@@ -2,49 +2,19 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Award, ExternalLink, Calendar, BadgeCheck, ChevronUp, ChevronDown, List, LayoutTemplate } from 'lucide-react';
 import { cn } from '../ui/utils';
+import { resumeData } from '../../data/resumeData';
 
-const certificates = [
-    {
-        id: 1,
-        title: "Advanced React Patterns",
-        issuer: "Frontend Masters",
-        date: "DEC 2024",
-        credentialId: "R-29384-X",
-        url: "#",
-        image: "https://images.unsplash.com/photo-1753998943413-8cba1b923c0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2RpbmclMjBjb2RlJTIwc2NyZWVuJTIwbW9uaXRvciUyMGRhcmt8ZW58MXx8fHwxNzY3MDc5MjYyfDA&ixlib=rb-4.1.0&q=80&w=1080",
-        aspect: "aspect-video"
-    },
-    {
-        id: 2,
-        title: "AWS Solutions Architect",
-        issuer: "Amazon Web Services",
-        date: "OCT 2024",
-        credentialId: "AWS-PSA-9921",
-        url: "#",
-        image: "https://images.unsplash.com/photo-1765410852491-7b40fc99d9b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGdlb21ldHJpYyUyMHNoYXBlcyUyMHRlY2hub2xvZ3klMjBkYXJrfGVufDF8fHx8MTc2NzA3OTI1OXww&ixlib=rb-4.1.0&q=80&w=1080",
-        aspect: "aspect-square"
-    },
-    {
-        id: 3,
-        title: "UI/UX Design Specialization",
-        issuer: "CalArts",
-        date: "AUG 2024",
-        credentialId: "CA-UIUX-882",
-        url: "#",
-        image: "https://images.unsplash.com/flagged/photo-1582567257363-8605111df91f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwZGlwbG9tYSUyMGRlc2lnbiUyMGRhcmt8ZW58MXx8fHwxNzY3MDc5MjU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
-        aspect: "aspect-[4/3]"
-    },
-    {
-        id: 4,
-        title: "Full Stack Development",
-        issuer: "Meta",
-        date: "JUN 2024",
-        credentialId: "META-FS-102",
-        url: "#",
-        image: "https://images.unsplash.com/photo-1715173679369-18006e84d6a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjZXJ0aWZpY2F0ZSUyMGRvY3VtZW50JTIwcGFwZXIlMjB0ZWNoJTIwYXdhcmR8ZW58MXx8fHwxNzY3MDc5MjUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
-        aspect: "aspect-video"
-    }
-];
+// Map resumeData.certifications to the component's expected format
+const certificates = resumeData.certifications.map((cert, index) => ({
+    id: index + 1,
+    title: cert.name,
+    issuer: cert.provider,
+    date: "2024", // Default date since not in resumeData
+    credentialId: `CERT-${String(index + 1).padStart(3, '0')}`, // Generated credential ID
+    url: "#", // Default URL since not in resumeData
+    image: cert.logo,
+    aspect: "aspect-square" // Default aspect ratio for provider logos
+}));
 
 export function Certificates() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -222,7 +192,7 @@ export function Certificates() {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -20 }}
                                         transition={{ duration: 0.3 }}
-                                        className="w-full h-full flex flex-col justify-center gap-4"
+                                        className="w-full h-full flex flex-col justify-start gap-4 py-4"
                                     >
                                         <div className="space-y-3">
                                             {certificates.map((cert) => (

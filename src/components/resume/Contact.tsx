@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Send, Check } from 'lucide-react';
 import { motion, useMotionValue, useTransform, AnimatePresence, animate } from 'motion/react';
 import { cn } from '../ui/utils';
+import { resumeData } from '../../data/resumeData';
 
 export function Contact() {
   const [isSent, setIsSent] = useState(false);
@@ -9,6 +10,8 @@ export function Contact() {
   const x = useMotionValue(0);
   const opacity = useTransform(x, [0, 200], [1, 0]);
   const textOpacity = useTransform(x, [0, 100], [1, 0]);
+
+  const { contact } = resumeData;
 
   const handleDragEnd = () => {
     if (x.get() > 200) {
@@ -138,14 +141,13 @@ export function Contact() {
                   <div className="mt-auto md:mb-12 w-full max-w-[200px] space-y-8">
                     <div className="flex flex-col gap-2">
                       <span className="text-[11px] font-mono text-neutral-500 uppercase tracking-widest mb-2 block border-b border-neutral-800 pb-2 font-bold">To:</span>
-                      <span className="font-serif italic text-3xl text-white tracking-wide">Alex Morgan</span>
-                      <span className="font-mono text-xs text-neutral-400 font-medium">c/o Design Engineering</span>
+                      <span className="font-serif italic text-3xl text-white tracking-wide">{contact.name}</span>
+                      <span className="font-mono text-xs text-neutral-400 font-medium">c/o Johns Hopkins University</span>
                     </div>
 
                     <div className="flex flex-col gap-1.5 font-mono text-xs text-neutral-400 uppercase tracking-widest leading-relaxed font-medium">
-                      <span>123 Portfolio Blvd</span>
-                      <span>San Francisco, CA</span>
-                      <span>94103 • USA</span>
+                      <span>{contact.location}</span>
+                      <span>USA</span>
                     </div>
                   </div>
 

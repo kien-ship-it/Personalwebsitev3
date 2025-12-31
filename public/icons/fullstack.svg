@@ -1,0 +1,9 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Stacked angular layers with lightning bolt -->
+    <path d="M2 6L12 2L22 6L12 10L2 6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="bevel" />
+    <path d="M2 12L12 8L22 12L12 16L2 12Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="bevel"
+        opacity="0.7" />
+    <path d="M2 18L12 14L22 18L12 22L2 18Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="bevel"
+        opacity="0.4" />
+    <path d="M12 6L10 10L13 9L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none" />
+</svg>
