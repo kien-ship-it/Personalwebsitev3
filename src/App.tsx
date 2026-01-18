@@ -33,17 +33,17 @@ export default function App() {
 
           <TechStack />
 
-          <Experience />
-
-          <FeatureAccordion />
-
           <Services />
 
-          <BentoGrid />
+          <Experience />
+
+          {/* <FeatureAccordion /> */}
 
           <ProjectGallery />
 
-          <Writing />
+          {/* <BentoGrid /> */}
+
+          {/* <Writing /> */}
 
           <Certificates />
 

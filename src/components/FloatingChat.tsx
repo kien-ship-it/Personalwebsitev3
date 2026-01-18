@@ -78,6 +78,9 @@ export function FloatingChat() {
         setAiResponse('');
         setIsVisible(true);
 
+        // Scroll to top of the website
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',

@@ -87,30 +87,41 @@ export const resumeData: ResumeData = {
     ],
     certifications: [
         {
-            name: "Machine Learning Specialization",
-            provider: "DeepLearning.AI",
-            logo: "/images/DeepLearning AI Logo.png"
+            name: "AWS Certified AI Practitioner",
+            provider: "Amazon Web Services Training and Certification",
+            logo: "/images/AWS AI Practitioner Logo.png",
+            issueDate: "2026"
         },
         {
-            name: "Practical Deep Learning",
-            provider: "fast.ai",
-            logo: "/images/Fast.ai Logo.png"
+            name: "Machine Learning Specialization",
+            provider: "DeepLearning.AI",
+            logo: "/images/DeepLearning AI Logo.png",
+            issueDate: "2025"
         },
         {
             name: "6.S191 Introduction to Deep Learning",
             provider: "MIT",
-            logo: "/images/MIT Logo.svg.png"
+            logo: "/images/MIT Logo.svg.png",
+            issueDate: "2025"
         },
         {
             name: "CS230 Deep Learning",
             provider: "Stanford",
-            logo: "/images/Stanford Cardinal Logo.svg.png"
+            logo: "/images/Stanford Cardinal Logo.svg.png",
+            issueDate: "2025"
         },
         {
             name: "Writing in the Sciences",
             provider: "Stanford",
-            logo: "/images/Stanford Cardinal Logo.svg.png"
-        }
+            logo: "/images/Stanford Cardinal Logo.svg.png",
+            issueDate: "2025"
+        },
+        {
+            name: "Practical Deep Learning",
+            provider: "fast.ai",
+            logo: "/images/Fast.ai Logo.png",
+            issueDate: "2025"
+        },
     ],
     experience: [
         {

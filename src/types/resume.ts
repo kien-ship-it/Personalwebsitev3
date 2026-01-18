@@ -35,6 +35,8 @@ export interface Certification {
     name: string;
     provider: string;
     logo: string;
+    date?: string;
+    issueDate?: string;
 }
 
 export interface Experience {

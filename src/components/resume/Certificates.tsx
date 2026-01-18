@@ -9,7 +9,7 @@ const certificates = resumeData.certifications.map((cert, index) => ({
     id: index + 1,
     title: cert.name,
     issuer: cert.provider,
-    date: "2024", // Default date since not in resumeData
+    date: cert.issueDate || "2026", // Use issueDate from resumeData or fallback
     credentialId: `CERT-${String(index + 1).padStart(3, '0')}`, // Generated credential ID
     url: "#", // Default URL since not in resumeData
     image: cert.logo,

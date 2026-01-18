@@ -1,36 +1,13 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { resumeData } from '../../data/resumeData';
-
-// Tech-themed placeholder images for projects
-const projectImages = [
-  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", // Code on screen
-  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", // Matrix-style
-];
-
-// Extract year from dateRange (e.g., "May 2025 - Present" → "2025")
-const extractYear = (dateRange: string): string => {
-  const match = dateRange.match(/\d{4}/);
-  return match ? match[0] : '';
-};
-
-// Map resumeData.projects to component format
-const projects = resumeData.projects.map((project, index) => ({
-  id: index + 1,
-  title: project.name,
-  category: project.role,
-  image: projectImages[index % projectImages.length],
-  description: project.tagline,
-  year: extractYear(project.dateRange),
-  techStack: project.techStack,
-  featured: project.featured
-}));
+import { getSortedGalleryItems, ProcessedGalleryItem } from '../../lib/galleryDataFeeder';
 
 export function ProjectGallery() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const projects = getSortedGalleryItems();
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
@@ -77,7 +54,7 @@ export function ProjectGallery() {
         className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide -mx-6 px-6"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {projects.map((project) => (
+        {projects.map((project: ProcessedGalleryItem) => (
           <motion.div
             key={project.id}
             className="min-w-[300px] md:min-w-[400px] snap-start group relative"
@@ -89,11 +66,22 @@ export function ProjectGallery() {
             {/* Image Card */}
             <div className="aspect-[4/3] overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 mb-6 relative">
               <div className="absolute inset-0 bg-neutral-900/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
-              />
+              {project.videoUrl ? (
+                <video
+                  src={project.videoUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                />
+              )}
 
               {/* Floating Badge */}
               <div className="absolute top-4 left-4 z-20">
@@ -104,9 +92,22 @@ export function ProjectGallery() {
 
               {/* Action Button Overlay */}
               <div className="absolute bottom-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
-                <Button size="icon" className="rounded-full bg-white text-black hover:bg-neutral-200">
-                  <ArrowUpRight className="w-4 h-4" />
-                </Button>
+                {project.link ? (
+                  <a 
+                    href={project.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                  >
+                    <Button size="icon" className="rounded-full bg-white text-black hover:bg-neutral-200">
+                      <ExternalLink className="w-4 h-4" />
+                    </Button>
+                  </a>
+                ) : (
+                  <Button size="icon" className="rounded-full bg-white text-black hover:bg-neutral-200">
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
             </div>
 
