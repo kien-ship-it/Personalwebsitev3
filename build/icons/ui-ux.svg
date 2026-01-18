@@ -1,0 +1,8 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sharp cursor with geometric frame -->
+    <rect x="2" y="2" width="20" height="20" stroke="currentColor" stroke-width="1.5" rx="0" stroke-linejoin="bevel" />
+    <path d="M6 6L6 16L9 13L12 18L14 17L11 12L15 12L6 6Z" fill="currentColor" />
+    <path d="M18 6L22 6" stroke="currentColor" stroke-width="1" opacity="0.5" />
+    <path d="M18 10L20 10" stroke="currentColor" stroke-width="1" opacity="0.5" />
+    <path d="M2 22L6 18" stroke="currentColor" stroke-width="1" opacity="0.3" />
+</svg>

@@ -142,7 +142,7 @@ export function Contact() {
                     <div className="flex flex-col gap-2">
                       <span className="text-[11px] font-mono text-neutral-500 uppercase tracking-widest mb-2 block border-b border-neutral-800 pb-2 font-bold">To:</span>
                       <span className="font-serif italic text-3xl text-white tracking-wide">{contact.name}</span>
-                      <span className="font-mono text-xs text-neutral-400 font-medium">c/o Johns Hopkins University</span>
+                      <span className="font-mono text-xs text-neutral-400 font-medium">Johns Hopkins University</span>
                     </div>
 
                     <div className="flex flex-col gap-1.5 font-mono text-xs text-neutral-400 uppercase tracking-widest leading-relaxed font-medium">

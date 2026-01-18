@@ -1,0 +1,8 @@
+{
+    "outputDirectory": "build",
+    "functions": {
+        "api/**/*.ts": {
+            "maxDuration": 30
+        }
+    }
+}

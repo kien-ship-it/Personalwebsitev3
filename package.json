@@ -1,5 +1,5 @@
 {
-      "name": "Implement Pixel Perfect Design",
+      "name": "kien-resume-website",
       "version": "0.1.0",
       "private": true,
       "dependencies": {
@@ -32,6 +32,7 @@
             "@react-spring/three": "^9.7.5",
             "@react-three/fiber": "^8.17.10",
             "@shadergradient/react": "^2.4.20",
+            "@supabase/supabase-js": "^2.89.0",
             "canvas-confetti": "*",
             "class-variance-authority": "^0.7.1",
             "clsx": "^2.1.1",
@@ -42,6 +43,7 @@
             "lucide-react": "^0.487.0",
             "motion": "*",
             "next-themes": "^0.4.6",
+            "openai": "^6.15.0",
             "react": "^18.3.1",
             "react-day-picker": "^8.10.1",
             "react-dom": "^18.3.1",
@@ -54,15 +56,21 @@
             "vaul": "^1.1.2"
       },
       "devDependencies": {
-            "@types/node": "^20.10.0",
+            "@types/node": "^20.19.27",
             "@types/react": "^19.2.7",
             "@types/react-dom": "^19.2.3",
             "@types/three": "^0.182.0",
+            "@vercel/node": "^5.5.16",
             "@vitejs/plugin-react-swc": "^3.10.2",
-            "vite": "^6.4.1"
+            "fast-check": "^4.5.3",
+            "typescript": "^5.9.3",
+            "vite": "^6.4.1",
+            "vitest": "^4.0.16"
       },
       "scripts": {
             "dev": "vite",
-            "build": "vite build"
+            "build": "vite build",
+            "test": "vitest --run",
+            "test:watch": "vitest"
       }
 }

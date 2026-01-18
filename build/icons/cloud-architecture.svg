@@ -1,0 +1,12 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sharp hexagonal cloud/network nodes -->
+    <path d="M12 2L18 5V11L12 14L6 11V5L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="bevel" />
+    <path d="M4 14L8 16V20L4 22L0 20V16L4 14Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="bevel"
+        transform="translate(2, 0)" />
+    <path d="M4 14L8 16V20L4 22L0 20V16L4 14Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="bevel"
+        transform="translate(14, 0)" />
+    <path d="M12 14V16" stroke="currentColor" stroke-width="1.5" />
+    <path d="M8 16L10 17" stroke="currentColor" stroke-width="1" />
+    <path d="M16 16L14 17" stroke="currentColor" stroke-width="1" />
+    <circle cx="12" cy="8" r="2" fill="currentColor" />
+</svg>

@@ -3,16 +3,31 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Send, X, Bot, Sparkles, User, ArrowUp, MessageSquare } from 'lucide-react';
 import { cn } from './ui/utils';
 
-// Mock messages
-const MOCK_MESSAGES = [
-    { id: 1, role: 'ai', text: "Hello. I'm the system AI. How can I help you navigate this portfolio?" },
+// Initial welcome message
+const INITIAL_MESSAGES = [
+    { id: 1, role: 'ai' as const, text: "Hello! I'm Kien's AI assistant. Ask me anything about his experience, skills, or projects." },
 ];
+
+// Chat API response types
+interface ChatApiResponse {
+    answer?: string;
+    error?: string;
+    code?: string;
+}
+
+// Message type
+interface ChatMessage {
+    id: number;
+    role: 'user' | 'ai';
+    text: string;
+}
 
 export function FloatingChat() {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
-    const [messages, setMessages] = useState(MOCK_MESSAGES);
+    const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
     const [isTyping, setIsTyping] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     // Auto-scroll to bottom
@@ -22,28 +37,70 @@ export function FloatingChat() {
         }
     }, [messages, isOpen, isTyping]);
 
-    const handleSend = () => {
-        if (!inputValue.trim()) return;
+    /**
+     * Send message to /api/chat endpoint
+     * Requirements: 5.1, 5.2, 5.3, 5.4, 5.6, 7.6
+     */
+    const handleSend = async () => {
+        const trimmedInput = inputValue.trim();
+        if (!trimmedInput || isLoading) return;
 
-        // Add user message
-        const newUserMsg = { id: Date.now(), role: 'user', text: inputValue };
-        setMessages(prev => [...prev, newUserMsg]);
+        // Add user message to conversation (Requirement 5.5)
+        const userMessage: ChatMessage = {
+            id: Date.now(),
+            role: 'user',
+            text: trimmedInput
+        };
+        setMessages(prev => [...prev, userMessage]);
         setInputValue("");
         setIsTyping(true);
+        setIsLoading(true);
 
-        // Simulate AI response
-        setTimeout(() => {
-            const aiResponses = [
-                "That's an interesting perspective. Tell me more.",
-                "I've noted that in the logs.",
-                "Accessing data... Here is what I found regarding your query.",
-                "The design system handles that case gracefully."
-            ];
-            const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+        try {
+            // Send POST request to /api/chat (Requirement 5.1)
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: trimmedInput }),
+            });
 
-            setMessages(prev => [...prev, { id: Date.now() + 1, role: 'ai', text: randomResponse }]);
+            const data: ChatApiResponse = await response.json();
+
+            if (!response.ok) {
+                // Handle error responses (Requirement 5.4, 7.6)
+                // Display user-friendly error without exposing technical details
+                const errorMessage = data.error || 'Something went wrong. Please try again.';
+                const aiErrorMessage: ChatMessage = {
+                    id: Date.now() + 1,
+                    role: 'ai',
+                    text: errorMessage,
+                };
+                setMessages(prev => [...prev, aiErrorMessage]);
+            } else {
+                // Display AI response in conversation (Requirement 5.3)
+                const aiMessage: ChatMessage = {
+                    id: Date.now() + 1,
+                    role: 'ai',
+                    text: data.answer || 'I received your message but couldn\'t generate a response.',
+                };
+                setMessages(prev => [...prev, aiMessage]);
+            }
+        } catch (error) {
+            // Handle network errors (Requirement 5.4, 7.6)
+            // Do not expose technical details
+            console.error('Chat request failed:', error);
+            const errorMessage: ChatMessage = {
+                id: Date.now() + 1,
+                role: 'ai',
+                text: 'Unable to connect. Please check your connection and try again.',
+            };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
             setIsTyping(false);
-        }, 1500);
+            setIsLoading(false);
+        }
     };
 
     const handleClose = (e: React.MouseEvent) => {
@@ -174,7 +231,7 @@ export function FloatingChat() {
                                         />
                                         <button
                                             type="submit"
-                                            disabled={!inputValue.trim()}
+                                            disabled={!inputValue.trim() || isLoading}
                                             className="absolute right-1 p-2 bg-white rounded-full text-black hover:bg-neutral-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                         >
                                             <ArrowUp className="w-4 h-4" />
