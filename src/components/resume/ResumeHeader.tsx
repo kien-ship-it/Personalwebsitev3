@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Github, Linkedin, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Tilt } from '../ui/tilt';
 import { resumeData } from '../../data/resumeData';
+import { SpeechBubble } from '../SpeechBubble';
 
 export function ResumeHeader() {
     const { contact } = resumeData;
@@ -72,7 +73,7 @@ export function ResumeHeader() {
                     </div>
                 </div>
 
-                <div className="hidden md:block">
+                <div className="hidden md:block relative">
                     <Tilt
                         className="relative"
                         style={{ width: '400px', height: '500px' }}
@@ -91,6 +92,14 @@ export function ResumeHeader() {
                             </div>
                         </div>
                     </Tilt>
+                    
+                    {/* Speech bubble positioned relative to mouth - right side of image */}
+                    <SpeechBubble 
+                        text="Hello! Ask me anything about my experience, skills, or projects."
+                        isVisible={true}
+                        className="bottom-6 left-0 right-0 mx-auto"
+                        style={{ width: '90%' }}
+                    />
                 </div>
             </div>
         </header>
