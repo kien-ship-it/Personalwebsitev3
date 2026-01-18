@@ -17,7 +17,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { generateEmbedding } from './lib/openai';
 import { matchCvEmbeddings, type MatchResult } from './lib/supabase';
-import { generateResponse, buildSystemPrompt } from './lib/openrouter';
+import { generateResponse, generateStreamingResponse, buildSystemPrompt } from './lib/openrouter';
 
 // Rate limiting configuration
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
@@ -35,6 +35,7 @@ const TOP_K_CHUNKS = 5;
 
 interface ChatRequest {
     message: string;
+    stream?: boolean;
 }
 
 interface ChatResponse {
@@ -206,6 +207,32 @@ export default async function handler(
         const systemPrompt = buildSystemPrompt(OWNER_NAME, context);
 
         // Step 5: Generate response via OpenRouter (Requirement 3.5, 3.6)
+        const useStreaming = body?.stream === true;
+
+        if (useStreaming) {
+            // Streaming response
+            try {
+                res.setHeader('Content-Type', 'text/event-stream');
+                res.setHeader('Cache-Control', 'no-cache');
+                res.setHeader('Connection', 'keep-alive');
+
+                const generator = generateStreamingResponse(systemPrompt, sanitizedMessage);
+
+                for await (const chunk of generator) {
+                    res.write(`data: ${JSON.stringify({ chunk })}\n\n`);
+                }
+
+                res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+                res.end();
+            } catch (error) {
+                console.error('OpenRouter streaming failed:', error);
+                res.write(`data: ${JSON.stringify({ error: 'Service temporarily unavailable. Please try again.' })}\n\n`);
+                res.end();
+            }
+            return;
+        }
+
+        // Non-streaming response
         let answer: string;
         try {
             answer = await generateResponse(systemPrompt, sanitizedMessage);

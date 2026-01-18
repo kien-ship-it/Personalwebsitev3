@@ -2,9 +2,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
+import { viteApiPlugin } from './vite-api-plugin';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), viteApiPlugin()],
   test: {
     globals: true,
     environment: 'node',

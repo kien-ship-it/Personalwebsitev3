@@ -95,8 +95,6 @@ export function ResumeHeader() {
                     
                     {/* Speech bubble positioned relative to mouth - right side of image */}
                     <SpeechBubble 
-                        text="Hello! Ask me anything about my experience, skills, or projects."
-                        isVisible={true}
                         className="bottom-6 left-0 right-0 mx-auto"
                         style={{ width: '90%' }}
                     />

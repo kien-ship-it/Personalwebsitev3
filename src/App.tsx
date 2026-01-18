@@ -15,9 +15,11 @@ import { FloatingChat } from './components/FloatingChat';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/ui/CustomCursor';
 import { ShaderBackground } from './components/ui/ShaderBackground';
+import { ChatProvider } from './context/ChatContext';
 
 export default function App() {
   return (
+    <ChatProvider>
     <div className="min-h-screen bg-transparent text-white font-sans selection:bg-red-500/30">
       <ShaderBackground />
       <div className="relative z-10">
@@ -56,5 +58,6 @@ export default function App() {
         <FloatingChat />
       </div>
     </div>
+    </ChatProvider>
   )
 }
