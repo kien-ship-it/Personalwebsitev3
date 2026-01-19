@@ -1,0 +1,72 @@
+import type { CvChunk } from './supabase.js';
+interface Contact {
+    name: string;
+    tagline: string;
+    phone: string;
+    email: string;
+    location: string;
+    linkedin: string;
+    github: string;
+}
+interface Education {
+    institution: string;
+    location: string;
+    degree: string;
+    graduationDate: string;
+    coursework: string[];
+}
+interface SkillItem {
+    name: string;
+}
+interface SkillCategory {
+    category: string;
+    items: SkillItem[];
+}
+interface Certification {
+    name: string;
+    provider: string;
+}
+interface Experience {
+    company: string;
+    location: string;
+    role: string;
+    dateRange: string;
+    project: string;
+    techStack: string[];
+    descriptions: string[];
+}
+interface Project {
+    name: string;
+    role: string;
+    dateRange: string;
+    tagline: string;
+    techStack: string[];
+    descriptions: string[];
+}
+interface AdditionalPosition {
+    organization: string;
+    location: string;
+    role: string;
+    dateRange: string;
+    project: string;
+    descriptions: string[];
+}
+export interface ResumeData {
+    contact: Contact;
+    education: Education;
+    skills: SkillCategory[];
+    certifications: Certification[];
+    experience: Experience[];
+    projects: Project[];
+    additionalPositions: AdditionalPosition[];
+}
+/**
+ * Chunk resume data into sections for embedding
+ * Each chunk contains content from a logical section with metadata
+ */
+export declare function chunkResumeData(data: ResumeData): CvChunk[];
+/**
+ * Get all unique section names from chunks
+ */
+export declare function getSectionNames(chunks: CvChunk[]): string[];
+export {};
