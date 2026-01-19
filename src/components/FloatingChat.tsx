@@ -18,7 +18,7 @@ export function FloatingChat() {
     const [inputValue, setInputValue] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const { setAiResponse, setIsLoading, setIsVisible } = useChatContext();
+    const { setAiResponse, setIsLoading } = useChatContext();
 
     // Focus input when expanded
     useEffect(() => {
@@ -76,10 +76,6 @@ export function FloatingChat() {
         setChatState('closed');
         setIsLoading(true);
         setAiResponse('');
-        setIsVisible(true);
-
-        // Scroll to top of the website
-        window.scrollTo({ top: 0, behavior: 'smooth' });
 
         try {
             const response = await fetch('/api/chat', {
