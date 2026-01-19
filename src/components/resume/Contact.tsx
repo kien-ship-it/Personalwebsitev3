@@ -26,24 +26,158 @@ interface FormErrors {
   general?: string;
 }
 
+// Edge Function URL - Supabase Edge Function endpoint
+// Uses environment variable for production, falls back to production URL
+const EDGE_FUNCTION_URL = import.meta.env.VITE_SUPABASE_FUNCTIONS_URL 
+  ? `${import.meta.env.VITE_SUPABASE_FUNCTIONS_URL}/send-contact-email`
+  : 'https://okpjiacritfnaiykjgfq.supabase.co/functions/v1/send-contact-email';
+
+// Supabase anon key for public API access
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY 
+  || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rcGppYWNyaXRmbmFpeWtqZ2ZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcxNTI0ODIsImV4cCI6MjA1MjcyODQ4Mn0.tYNJPOgXVDho_9FXbTBVpbFCrGMqnXPNfqLSPCcjvlY';
+
+// Email validation regex
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// HTML escaping for input sanitization
+function sanitizeHtml(input: string): string {
+  if (!input) return '';
+  
+  // Escape HTML special characters to prevent injection
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;');
+}
+
+// Validate and sanitize form data
+function validateAndSanitizeFormData(data: ContactFormData): { errors: FormErrors; sanitizedData: ContactFormData } {
+  const errors: FormErrors = {};
+  const sanitizedData: ContactFormData = {
+    name: '',
+    email: '',
+    message: ''
+  };
+
+  // Name validation and sanitization
+  if (!data.name.trim()) {
+    errors.name = 'Name is required';
+  } else if (data.name.length > 100) {
+    errors.name = 'Name must be 100 characters or less';
+  } else {
+    sanitizedData.name = sanitizeHtml(data.name.trim());
+  }
+
+  // Email validation (no HTML escaping needed for email)
+  if (!data.email.trim()) {
+    errors.email = 'Email is required';
+  } else if (!EMAIL_REGEX.test(data.email)) {
+    errors.email = 'Please enter a valid email address';
+  } else {
+    sanitizedData.email = data.email.trim().toLowerCase();
+  }
+
+  // Message validation and sanitization
+  if (!data.message.trim()) {
+    errors.message = 'Message is required';
+  } else if (data.message.length > 5000) {
+    errors.message = 'Message must be 5000 characters or less';
+  } else {
+    sanitizedData.message = sanitizeHtml(data.message.trim());
+  }
+
+  return { errors, sanitizedData };
+}
+
+// API client for Edge Function
+async function submitContactForm(data: ContactFormData): Promise<EmailResponse> {
+  const response = await fetch(EDGE_FUNCTION_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error || 'Failed to send message');
+  }
+
+  return result as EmailResponse;
+}
+
 export function Contact() {
+  // Form state
+  const [formData, setFormData] = useState<ContactFormData>({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const constraintsRef = useRef(null);
   const x = useMotionValue(0);
-  const opacity = useTransform(x, [0, 200], [1, 0]);
   const textOpacity = useTransform(x, [0, 100], [1, 0]);
 
   const { contact } = resumeData;
 
-  const handleDragEnd = () => {
+  // Handle input changes
+  const handleInputChange = (field: keyof ContactFormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+    // Clear submit error when user makes changes
+    if (submitError) {
+      setSubmitError(null);
+    }
+  };
+
+  const handleDragEnd = async () => {
     if (x.get() > 200) {
-      setIsSent(true);
+      // Validate and sanitize form before submission
+      const { errors: validationErrors, sanitizedData } = validateAndSanitizeFormData(formData);
+      
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        animate(x, 0, { type: "spring", stiffness: 400, damping: 40 });
+        return;
+      }
+
+      // Submit form with sanitized data
+      setIsSubmitting(true);
+      setSubmitError(null);
+
+      try {
+        await submitContactForm(sanitizedData);
+        setIsSent(true);
+      } catch (error) {
+        console.error('Form submission error:', error);
+        setSubmitError(error instanceof Error ? error.message : 'Failed to send message. Please try again.');
+        animate(x, 0, { type: "spring", stiffness: 400, damping: 40 });
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       animate(x, 0, { type: "spring", stiffness: 400, damping: 40 });
     }
   };
 
   const resetForm = () => {
+    setFormData({ name: '', email: '', message: '' });
+    setErrors({});
+    setSubmitError(null);
     setIsSent(false);
     x.set(0);
   };
@@ -79,16 +213,24 @@ export function Contact() {
                       <input
                         type="text"
                         placeholder="Your Name"
-                        className="w-full bg-transparent border-b border-neutral-700 text-xl py-2 focus:outline-none focus:border-white transition-colors text-white font-serif italic placeholder:text-neutral-700 font-light"
+                        value={formData.name}
+                        onChange={handleInputChange('name')}
+                        disabled={isSubmitting}
+                        className={`w-full bg-transparent border-b ${errors.name ? 'border-red-500' : 'border-neutral-700'} text-xl py-2 focus:outline-none focus:border-white transition-colors text-white font-serif italic placeholder:text-neutral-700 font-light disabled:opacity-50`}
                       />
+                      {errors.name && <span className="text-red-500 text-xs mt-1 font-mono">{errors.name}</span>}
                     </div>
                     <div className="space-y-2">
                       <label className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest font-bold">Reply-To:</label>
                       <input
                         type="email"
                         placeholder="your@email.com"
-                        className="w-full bg-transparent border-b border-neutral-700 text-lg py-2 focus:outline-none focus:border-white transition-colors text-neutral-300 font-mono placeholder:text-neutral-700"
+                        value={formData.email}
+                        onChange={handleInputChange('email')}
+                        disabled={isSubmitting}
+                        className={`w-full bg-transparent border-b ${errors.email ? 'border-red-500' : 'border-neutral-700'} text-lg py-2 focus:outline-none focus:border-white transition-colors text-neutral-300 font-mono placeholder:text-neutral-700 disabled:opacity-50`}
                       />
+                      {errors.email && <span className="text-red-500 text-xs mt-1 font-mono">{errors.email}</span>}
                     </div>
                   </div>
 
@@ -97,8 +239,12 @@ export function Contact() {
                     <label className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest font-bold">Message:</label>
                     <textarea
                       placeholder="Write your message here..."
-                      className="w-full h-full min-h-[150px] bg-transparent resize-none border-none p-4 text-white leading-relaxed focus:ring-0 placeholder:text-neutral-700 text-base md:text-lg font-serif italic"
+                      value={formData.message}
+                      onChange={handleInputChange('message')}
+                      disabled={isSubmitting}
+                      className={`w-full h-full min-h-[150px] bg-transparent resize-none border-none p-4 text-white leading-relaxed focus:ring-0 placeholder:text-neutral-700 text-base md:text-lg font-serif italic disabled:opacity-50 ${errors.message ? 'ring-1 ring-red-500' : ''}`}
                     />
+                    {errors.message && <span className="text-red-500 text-xs mt-1 font-mono">{errors.message}</span>}
                   </div>
 
                   {/* DRAGGABLE SEND FOOTER */}
@@ -114,25 +260,37 @@ export function Contact() {
                         style={{ opacity: textOpacity }}
                         className="absolute left-16 text-[11px] font-mono text-neutral-400 uppercase tracking-widest pointer-events-none select-none font-bold"
                       >
-                        Drag plane to send transmission
+                        {isSubmitting ? 'Sending transmission...' : 'Drag plane to send transmission'}
                       </motion.span>
 
                       {/* Draggable Plane */}
                       <motion.div
-                        drag="x"
+                        drag={isSubmitting ? false : "x"}
                         dragConstraints={constraintsRef}
                         dragElastic={0.1}
                         dragMomentum={false}
                         onDragEnd={handleDragEnd}
                         style={{ x }}
-                        className="relative z-10 cursor-grab active:cursor-grabbing touch-none"
+                        className={`relative z-10 ${isSubmitting ? 'cursor-not-allowed' : 'cursor-grab active:cursor-grabbing'} touch-none`}
                       >
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-110 transition-transform border border-neutral-200">
-                          <Send className="w-5 h-5 text-black translate-x-[1px] translate-y-[1px]" />
+                        <div className={`w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-110 transition-transform border border-neutral-200 ${isSubmitting ? 'opacity-50' : ''}`}>
+                          {isSubmitting ? (
+                            <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <Send className="w-5 h-5 text-black translate-x-[1px] translate-y-[1px]" />
+                          )}
                         </div>
                       </motion.div>
                     </div>
                   </div>
+
+                  {/* Error Message */}
+                  {submitError && (
+                    <div className="mt-4 flex items-center gap-2 text-red-500 text-sm font-mono">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                      <span>{submitError}</span>
+                    </div>
+                  )}
 
                 </div>
 

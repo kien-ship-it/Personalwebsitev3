@@ -7,8 +7,9 @@ This Supabase Edge Function handles contact form submissions by sending email no
 - Receives contact form data (name, email, message) via POST request
 - Validates input data and sanitizes content
 - Sends notification email to site owner (dle26@jhu.edu)
-- Sends confirmation email to the user
 - Returns appropriate success/error responses
+
+**Note:** Due to Resend API limitations with the test domain, only the site owner receives email notifications. User confirmation emails are not sent.
 
 ## Environment Variables
 

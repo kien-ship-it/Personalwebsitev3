@@ -102,10 +102,10 @@ Deno.serve(async (req: Request): Promise<Response> => {
         const notificationEmail = formatNotificationEmail(contactData, config);
         const confirmationEmail = formatConfirmationEmail(contactData, config);
 
-        // Send emails using Resend API
+        // Send notification email using Resend API
         const emailIds = await sendEmailsBatch([notificationEmail, confirmationEmail], config);
 
-        return createSuccessResponse('Emails sent successfully', emailIds);
+        return createSuccessResponse('Email sent successfully', emailIds);
 
     } catch (error) {
         console.error('Edge Function error:', error);
@@ -208,18 +208,35 @@ Deno.serve(async (req: Request): Promise<Response> => {
 // Validate environment configuration
 function validateEnvironmentConfig(): EdgeFunctionConfig {
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-    const SITE_OWNER_EMAIL = Deno.env.get('SITE_OWNER_EMAIL') || 'dle26@jhu.edu';
-    const FROM_EMAIL = Deno.env.get('FROM_EMAIL') || 'onboarding@resend.dev';
+    const SITE_OWNER_EMAIL = Deno.env.get('SITE_OWNER_EMAIL');
+    const FROM_EMAIL = Deno.env.get('FROM_EMAIL');
 
     if (!RESEND_API_KEY) {
         throw new Error('RESEND_API_KEY environment variable is required');
     }
 
-    return {
+    // Log the actual email configuration for debugging
+    console.log('Email configuration:', {
+        FROM_EMAIL: FROM_EMAIL,
+        SITE_OWNER_EMAIL: SITE_OWNER_EMAIL,
+        hasFROM_EMAIL: !!FROM_EMAIL,
+        hasSITE_OWNER_EMAIL: !!SITE_OWNER_EMAIL,
+        RESEND_API_KEY_PREFIX: RESEND_API_KEY.substring(0, 8) + '...'
+    });
+
+    // Use environment variables if they exist, otherwise use defaults
+    const config = {
         RESEND_API_KEY,
-        SITE_OWNER_EMAIL,
-        FROM_EMAIL
+        SITE_OWNER_EMAIL: SITE_OWNER_EMAIL || 'dle26@jh.edu',
+        FROM_EMAIL: FROM_EMAIL || 'noreply@kienle.work'
     };
+
+    console.log('Final configuration:', {
+        FROM_EMAIL: config.FROM_EMAIL,
+        SITE_OWNER_EMAIL: config.SITE_OWNER_EMAIL
+    });
+
+    return config;
 }
 
 // Validate and parse contact form data
@@ -288,6 +305,17 @@ async function sendEmailsBatch(emails: EmailContent[], config: EdgeFunctionConfi
 
     try {
         console.log(`Attempting to send ${emails.length} emails via Resend batch API`);
+        
+        // Log the actual email data being sent (without sensitive content)
+        emails.forEach((email, index) => {
+            console.log(`Email ${index + 1}:`, {
+                from: email.from,
+                to: email.to,
+                subject: email.subject,
+                hasHtml: !!email.html,
+                tags: email.tags
+            });
+        });
 
         const response = await fetch('https://api.resend.com/emails/batch', {
             method: 'POST',
@@ -295,7 +323,7 @@ async function sendEmailsBatch(emails: EmailContent[], config: EdgeFunctionConfi
                 'Authorization': `Bearer ${config.RESEND_API_KEY}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(batchRequest)
+            body: JSON.stringify(resendEmails)
         });
 
         if (!response.ok) {
@@ -342,13 +370,12 @@ async function sendEmailsBatch(emails: EmailContent[], config: EdgeFunctionConfi
             console.warn(`Expected ${emails.length} email responses, got ${result.data.length}`);
         }
 
-        // Log successful email sends with details
-        console.log(`Successfully sent ${result.data.length} emails:`,
-            result.data.map(email => ({
-                id: email.id,
-                to: email.to,
-                created_at: email.created_at
-            })));
+        // Log successful email send with details
+        console.log(`Successfully sent email:`, {
+            id: result.data[0].id,
+            to: result.data[0].to,
+            created_at: result.data[0].created_at
+        });
 
         return result.data.map(email => email.id);
 
@@ -600,7 +627,7 @@ function formatNotificationEmail(data: ContactFormData, config: EdgeFunctionConf
 
 // Format confirmation email for user
 function formatConfirmationEmail(data: ContactFormData, config: EdgeFunctionConfig): EmailContent {
-    const subject = `Thank you for contacting us, ${data.name}!`;
+    const subject = "Thank you for reaching out - Kien Le";
 
     const html = `
 <!DOCTYPE html>
@@ -608,7 +635,7 @@ function formatConfirmationEmail(data: ContactFormData, config: EdgeFunctionConf
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message Received - Thank You</title>
+    <title>Thank you for contacting me</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -626,102 +653,56 @@ function formatConfirmationEmail(data: ContactFormData, config: EdgeFunctionConf
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .header {
-            text-align: center;
-            border-bottom: 2px solid #28a745;
+            border-bottom: 2px solid #007bff;
             padding-bottom: 20px;
             margin-bottom: 30px;
         }
         .header h1 {
-            color: #28a745;
+            color: #007bff;
             margin: 0;
-            font-size: 28px;
+            font-size: 24px;
         }
-        .checkmark {
-            font-size: 48px;
-            color: #28a745;
-            margin-bottom: 10px;
-        }
-        .content {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .content p {
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        .highlight {
-            background-color: #e8f5e8;
-            padding: 20px;
-            border-radius: 6px;
-            border-left: 4px solid #28a745;
-            margin: 20px 0;
-        }
-        .message-summary {
+        .message-content {
             background-color: #f8f9fa;
             padding: 20px;
-            border-radius: 6px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        .message-summary h3 {
-            margin-top: 0;
-            color: #555;
-        }
-        .message-preview {
-            color: #666;
-            font-style: italic;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
             white-space: pre-wrap;
-            max-height: 100px;
-            overflow: hidden;
-            position: relative;
+            margin: 20px 0;
         }
         .footer {
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid #eee;
-            text-align: center;
             font-size: 14px;
             color: #666;
         }
-        .contact-info {
+        .signature {
             margin-top: 20px;
-            font-size: 14px;
-            color: #888;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="checkmark">✓</div>
-            <h1>Message Received!</h1>
+            <h1>Thank you for reaching out!</h1>
         </div>
         
-        <div class="content">
-            <p>Hi <strong>${data.name}</strong>,</p>
-            <p>Thank you for reaching out! I've received your message and wanted to confirm that it arrived safely.</p>
-            
-            <div class="highlight">
-                <strong>Expected Response Time:</strong> 24-48 hours
-            </div>
-            
-            <div class="message-summary">
-                <h3>Your Message Summary:</h3>
-                <div class="message-preview">${data.message.length > 200 ? data.message.substring(0, 200) + '...' : data.message}</div>
-            </div>
-            
-            <p>I'll review your message carefully and get back to you as soon as possible. If your inquiry is urgent, please don't hesitate to follow up.</p>
-            
+        <p>Hi ${data.name},</p>
+        
+        <p>Thank you for contacting me through my website. I've received your message and will get back to you as soon as possible.</p>
+        
+        <p>Here's a copy of your message for your records:</p>
+        
+        <div class="message-content">${data.message}</div>
+        
+        <div class="signature">
             <p>Best regards,<br>
-            <strong>Kien Le</strong></p>
+            Kien Le</p>
         </div>
         
         <div class="footer">
-            <p>This is an automated confirmation email.</p>
-            <div class="contact-info">
-                <p>If you didn't send this message, please ignore this email.</p>
-                <p>Sent: ${new Date().toLocaleString()}</p>
-            </div>
+            <p>This is an automated confirmation. Please do not reply to this email.</p>
         </div>
     </div>
 </body>

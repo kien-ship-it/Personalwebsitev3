@@ -31,7 +31,6 @@ export function ResumeHeader() {
                             alt="Johns Hopkins University"
                             className="h-6 w-auto opacity-80"
                         />
-                        <span className=" font-serif italic text-lg md:text-xl text-neutral-400 mb-2 max-w-lg leading-relaxed font-light">29'</span>
                     </div>
 
                     <div className="flex flex-wrap gap-4">
