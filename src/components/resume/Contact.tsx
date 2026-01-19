@@ -1,8 +1,30 @@
 import React, { useState, useRef } from 'react';
-import { Send, Check } from 'lucide-react';
+import { Send, Check, AlertCircle } from 'lucide-react';
 import { motion, useMotionValue, useTransform, AnimatePresence, animate } from 'motion/react';
-import { cn } from '../ui/utils';
 import { resumeData } from '../../data/resumeData';
+
+// Contact form data interface (matches Edge Function)
+interface ContactFormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+// API response interface
+interface EmailResponse {
+  success: boolean;
+  message: string;
+  emailIds?: string[];
+  error?: string;
+}
+
+// Form validation errors
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+  general?: string;
+}
 
 export function Contact() {
   const [isSent, setIsSent] = useState(false);

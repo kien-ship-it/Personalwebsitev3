@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "lib": [
+            "deno.window",
+            "deno.ns",
+            "dom"
+        ],
+        "strict": true,
+        "types": [
+            "@types/deno"
+        ]
+    },
+    "imports": {
+        "supabase": "jsr:@supabase/functions-js@2.4.1"
+    }
+}
