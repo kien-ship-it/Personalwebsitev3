@@ -8,10 +8,11 @@ export const resumeData: ResumeData = {
         name: "Kien Le",
         tagline: "Full-Stack Developer • AI Enthusiast • Builder",
         phone: "(410) 365-9686",
-        email: "dle26@jhu.edu",
+        email: "dle26@jh.edu",
         location: "Baltimore, Maryland",
-        linkedin: "linkedin.com/in/duckienle",
+        linkedin: "www.linkedin.com/in/duckienle",
         github: "github.com/kien-ship-it",
+        cvLink: "/cv.pdf",
         profileImage: "/images/profile.jpg"
     },
     education: {

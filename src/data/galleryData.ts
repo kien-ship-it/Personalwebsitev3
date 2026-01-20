@@ -26,7 +26,7 @@ export const galleryData: GalleryItem[] = [
     year: "2025",
     techStack: ["React", "Python", "FastAPI", "GCP", "Gemini 2.5 Pro"],
     featured: true,
-    link: "https://example.com/livesolve"
+    link: "https://github.com/kien-ship-it/livesolve"
   },
   {
     id: "2",
@@ -37,7 +37,7 @@ export const galleryData: GalleryItem[] = [
     year: "2025",
     techStack: ["Ci/Cd", "Docker", "AWS ECS", "Lambda", "Terraform"],
     featured: false,
-    link: "https://example.com/senticare"
+    link: "https://github.com/slugger-analytics/slugger-website"
   },
   {
     id: "3",
@@ -48,7 +48,7 @@ export const galleryData: GalleryItem[] = [
     year: "2025",
     techStack: ["React", "Node.js", "Cloud Functions", "Firestore", "ResNet"],
     featured: false,
-    link: "https://example.com/senticare"
+    link: "https://github.com/kien-ship-it/SentiCare"
   },
     {
     id: "4",
@@ -59,6 +59,6 @@ export const galleryData: GalleryItem[] = [
     year: "2024",
     techStack: ["Flutter", "Dart", "Firebase", "Gemini API", "Dictionary API", "TTS"],
     featured: false,
-    link: "https://example.com/senticare"
+    link: "https://github.com/kien-ship-it/Kien-s_english_app"
   },
 ];
