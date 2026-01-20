@@ -37,6 +37,7 @@
             "class-variance-authority": "^0.7.1",
             "clsx": "^2.1.1",
             "cmdk": "^1.1.1",
+            "dotenv": "^16.6.1",
             "embla-carousel-react": "^8.6.0",
             "i": "^0.3.7",
             "input-otp": "^1.4.2",
@@ -63,6 +64,7 @@
             "@vercel/node": "^5.5.16",
             "@vitejs/plugin-react-swc": "^3.10.2",
             "fast-check": "^4.5.3",
+            "tsx": "^4.19.2",
             "typescript": "^5.9.3",
             "vite": "^6.4.1",
             "vitest": "^4.0.16"
@@ -71,6 +73,7 @@
             "dev": "vite",
             "build": "vite build",
             "test": "vitest --run",
-            "test:watch": "vitest"
+            "test:watch": "vitest",
+            "deploy:resume": "tsx scripts/deploy-resume-to-vector-db.ts"
       }
 }

@@ -2,15 +2,14 @@
 (410) 365-9686 • dle26@jhu.edu • Baltimore, Maryland • linkedin.com/in/duckienle • github.com/kien-ship-it
 # EDUCATION
 # Johns Hopkins University
-Baltimore, Maryland
+Baltimore, Maryland May 2029
 Bachelor of Science, Computer Science
-May 2029
 - Relevant coursework: Full-Stack Javascript, Data Structures, Intermediate Programming, Computational Reasoning, Human and Machine Intelligence Alignment.
 # SKILLS & CERTIFICATIONS
 - Programming Languages: Python, Java, C++, HTML, Dart, React, Node.js, TypeScript, Terraform.
 - Tools and Technologies: GCP, AWS, Datadog, Figma, Firebase, Docker, Vercel, Supabase, Google Colab, Jupyter Notebook, Git, Flutter, IoT.
-- Certifications: Machine Learning Specialization (DeepLearning.AI), Practical Deep Learning (fast.ai), 6.S191 Introduction to Deep Learning (MIT), CS230 Deep Learning (Stanford), Writing in the Sciences (Stanford).
-- Other Skills: Spec-driven development, IaC, UI/UX, Collaboration, Communication, Product/Project Management, Prompt Engineering, DevOps.
+- Certifications: AWS Certified AI Practitioner, Machine Learning Specialization (DeepLearning.AI), Practical Deep Learning (fast.ai), 6.S191 Introduction to Deep Learning (MIT), CS230 Deep Learning (Stanford), Writing in the Sciences (Stanford).
+- Other Skills: Spec-driven development, IaC, UI/UX, Collaboration, Communication, Product/Project Management
 # WORK EXPERIENCE
 Baltimore, Maryland
 October 2025 - Present

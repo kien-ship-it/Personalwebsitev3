@@ -6,6 +6,7 @@ export interface Contact {
     location: string;
     linkedin: string;
     github: string;
+    cvLink?: string;
     profileImage: string;
 }
 export interface Education {

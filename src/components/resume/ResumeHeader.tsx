@@ -34,9 +34,14 @@ export function ResumeHeader() {
                     </div>
 
                     <div className="flex flex-wrap gap-4">
-                        <Button className="bg-white text-black hover:bg-neutral-200 transition-all rounded px-6 h-12 text-sm font-medium group">
+                        <a 
+                            href={contact.cvLink ?? '/cv.pdf'} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white text-black hover:bg-neutral-200 transition-all rounded px-6 h-12 text-sm font-medium group inline-flex items-center"
+                        >
                             Download CV <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </Button>
+                        </a>
                         <div className="flex items-center gap-2 px-2">
                             <Button
                                 variant="ghost"
@@ -64,7 +69,7 @@ export function ResumeHeader() {
                                 className="text-neutral-500 hover:text-white hover:bg-transparent"
                                 asChild
                             >
-                                <a href={`mailto:${contact.email}`}>
+                                <a href={`mailto:${contact.email}`} target="_blank" rel="noopener noreferrer">
                                     <Mail className="w-5 h-5" />
                                 </a>
                             </Button>
