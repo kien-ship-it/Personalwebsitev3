@@ -16,6 +16,8 @@ import { Footer } from './components/Footer';
 import { CustomCursor } from './components/ui/CustomCursor';
 import { ShaderBackground } from './components/ui/ShaderBackground';
 import { ChatProvider } from './context/ChatContext';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 export default function App() {
   return (
@@ -58,6 +60,8 @@ export default function App() {
         <FloatingChat />
       </div>
     </div>
+    <Analytics />
+    <SpeedInsights />
     </ChatProvider>
   )
 }
